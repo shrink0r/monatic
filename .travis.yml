@@ -5,7 +5,8 @@ php:
   - nightly
   - hhvm
 
-before_script: composer install
+before_script:
+  - composer install
 
 script:
   - vendor/bin/phpunit
