@@ -48,7 +48,9 @@ class Many implements MonadInterface
 
     protected function accessValue($value, $key)
     {
-        if (is_array($value)) {
+        if ($value instanceof Option) {
+            return $value->$key->unwrap();
+        } elseif (is_array($value)) {
             return $this->accessor->getValue($value, "[{$key}]");
         } elseif (is_object($value)) {
             return $this->accessor->getValue($value, $key);

@@ -13,15 +13,6 @@ class ManyOption extends Many
         parent::__construct(array_map($wrapValue, $values));
     }
 
-    public function __get($propertyName)
-    {
-        return $this->andThen(
-            function ($value) use ($propertyName) {
-                return $value->$propertyName;
-            }
-        );
-    }
-
     public function unwrap(callable $codeBlock = null)
     {
         $unwrapValue = function ($value) {
