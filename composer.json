@@ -1,0 +1,25 @@
+{
+    "name": "shrink0r/monads",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thorsten Schmitt-Rink",
+            "email": "schmittrink@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Monatic\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { "Monatic\\Tests\\": "tests/unit/" }
+    },
+    "require": {
+        "symfony/property-access": "2.6.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5",
+        "squizlabs/php_codesniffer": "2.2"
+    }
+}
