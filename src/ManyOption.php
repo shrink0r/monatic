@@ -23,6 +23,6 @@ class ManyOption extends Many
             }
         };
 
-        return array_map($unwrapValue, parent::unwrap($codeblock));
+        return array_map($unwrapValue, parent::unwrap($codeBlock));
     }
 }
