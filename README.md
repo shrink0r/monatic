@@ -14,10 +14,13 @@ Chained access to nested array/object values:
 use Shrink0r\Monatic\Option;
 
 $data = [ "foo" => [ "bar" => "hello world!"] ];
+
 echo Option::wrap($data)->foo->bar->unwrap();
 // > hello world!
+
 echo Option::wrap($data)->foo->snafu->unwrap();
 // > (null)
+
 echo get_class(Option::wrap($data)->foo->snafu);
 // > Shrink0r\\Monatic\\None
 
@@ -67,8 +70,10 @@ $data = [
         ]
     ]
 ];
+
 echo implode(', ', Many::wrap($data)->categories->articles->title->unwrap());
 // > foo one text, foo two text, foo three text, foo four text
+
 echo implode(', ', Many::wrap($data)->snafu->articles->title->unwrap());
 // > (empty string)
 
@@ -125,6 +130,7 @@ $allWordsInTitles = ManyOption::wrap($data)->categories->articles->andThen(
         return ManyOption::wrap(explode(' ', $article->title->unwrap()));
     }
 );
+
 echo implode(', ', array_unique($allWordsInTitles->unwrap()));
 // > foo, one, text, two, three, four
 
