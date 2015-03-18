@@ -1,6 +1,6 @@
 <?php
 
-namespace Monatic;
+namespace Shrink0r\Monatic;
 
 class ManyOption extends Many
 {

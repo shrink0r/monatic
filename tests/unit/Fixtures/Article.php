@@ -1,6 +1,6 @@
 <?php
 
-namespace Monatic\Tests\Fixtures;
+namespace Shrink0r\Monatic\Tests\Fixtures;
 
 class Article
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Monatic;
+namespace Shrink0r\Monatic;
 
 class Eventually implements MonadInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Monatic\Tests;
+namespace Shrink0r\Monatic\Tests;
 
-use Monatic\Many;
-use Monatic\Option;
+use Shrink0r\Monatic\Many;
+use Shrink0r\Monatic\Option;
 use PHPUnit_Framework_TestCase;
 
 class ManyTest extends PHPUnit_Framework_TestCase

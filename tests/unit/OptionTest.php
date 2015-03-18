@@ -1,11 +1,11 @@
 <?php
 
-namespace Monatic\Tests;
+namespace Shrink0r\Monatic\Tests;
 
-use Monatic\Tests\Fixtures\Article;
-use Monatic\Tests\Fixtures\Category;
-use Monatic\Option;
-use Monatic\None;
+use Shrink0r\Monatic\Tests\Fixtures\Article;
+use Shrink0r\Monatic\Tests\Fixtures\Category;
+use Shrink0r\Monatic\Option;
+use Shrink0r\Monatic\None;
 use PHPUnit_Framework_TestCase;
 
 class OptionTest extends PHPUnit_Framework_TestCase

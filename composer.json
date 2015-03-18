@@ -9,11 +9,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "Monatic\\": "src/"
+            "Shrink0r\\Monatic\\": "src/"
         }
     },
     "autoload-dev": {
-        "psr-4": { "Monatic\\Tests\\": "tests/unit/" }
+        "psr-4": { "Shrink0r\\Monatic\\Tests\\": "tests/unit/" }
     },
     "require": {
         "symfony/property-access": "2.6.5"

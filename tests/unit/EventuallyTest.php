@@ -1,8 +1,8 @@
 <?php
 
-namespace Monatic\Tests;
+namespace Shrink0r\Monatic\Tests;
 
-use Monatic\Eventually;
+use Shrink0r\Monatic\Eventually;
 use PHPUnit_Framework_TestCase;
 
 class EventuallyTest extends PHPUnit_Framework_TestCase

@@ -1,8 +1,8 @@
 <?php
 
-namespace Monatic\Tests;
+namespace Shrink0r\Monatic\Tests;
 
-use Monatic\None;
+use Shrink0r\Monatic\None;
 use PHPUnit_Framework_TestCase;
 
 class NoneTest extends PHPUnit_Framework_TestCase
