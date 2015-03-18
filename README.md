@@ -91,38 +91,7 @@ use Shrink0r\Monatic\ManyOption;
 use Shrink0r\Monatic\Option;
 
 $data = [
-    [
-        "categories" => [
-            [
-                "name" => "category-one",
-                "articles" => [
-                    [ "title" => "foo one text" ]
-                ]
-            ],
-            [
-                "name" => "category-two",
-                "articles" => [
-                    [ "title" => "foo two text" ]
-                ]
-            ]
-        ]
-    ],
-    [
-        "categories" => [
-            [
-                "name" => "category-three",
-                "articles" => [
-                    [ "title" => "foo three text" ]
-                ]
-            ],
-            [
-                "name" => "category-four",
-                "articles" => [
-                    [ "title" => "foo four text" ]
-                ]
-            ]
-        ]
-    ]
+    // ... same definition as in the Many example
 ];
 
 $allWordsInTitles = ManyOption::wrap($data)->categories->articles->andThen(
