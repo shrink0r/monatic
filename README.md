@@ -1,6 +1,7 @@
 # Monatic
 
 [![Build Status](https://secure.travis-ci.org/shrink0r/monatic.png)](http://travis-ci.org/shrink0r/monatic)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/shrink0r/monatic/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/shrink0r/monatic/?branch=master)
 
 Playing around with monads and php.
 
