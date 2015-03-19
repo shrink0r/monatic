@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Wraps a given value and provides fluent access to it's underlying properties.
  */
-class Maybe extends Monad
+class Maybe implements MonadInterface
 {
     /**
      * @var mixed $value;
@@ -77,6 +77,29 @@ class Maybe extends Monad
     {
         return $this->bind(function ($value) use ($propertyName) {
             return $this->accessValue($value, $propertyName);
+        });
+    }
+
+    /**
+     * Calls an arbitrary method on the monad's value and returns a monad with the result.
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return MonadInterface
+     */
+    public function __call($methodName, array $arguments)
+    {
+        return $this->bind(function($value) use ($methodName, $arguments) {
+            $callable = [ $value, $methodName ];
+
+            if (is_callable($callable)) {
+                $result = call_user_func([$value, $methodName], $arguments);
+            } else {
+                $result = null;
+            }
+
+            return static::unit($result);
         });
     }
 

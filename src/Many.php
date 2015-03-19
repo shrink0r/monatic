@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Wraps a given collection, thereby providing recursive/fluent access to any underlying collections.
  */
-class Many extends Monad
+class Many implements MonadInterface
 {
     /**
      * @var array $values
@@ -80,6 +80,23 @@ class Many extends Monad
     }
 
     /**
+     * Call an arbitrary method on the monad's value and return a new monad with the result.
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return MonadInterface
+     */
+    public function __call($name, array $arguments)
+    {
+        return $this->bind(function($value) use ($name, $arguments) {
+            return static::unit(
+                call_user_func([$value, $name], $arguments)
+            );
+        });
+    }
+
+    /**
      * Creates a new Many instance from the given array.
      *
      * @param array $values
@@ -130,23 +147,5 @@ class Many extends Monad
         }
 
         return array_merge($flattened, $getped);
-    }
-
-    /**
-     * call an arbitrary method on the unitped value
-     * and unit the result again.
-     *
-     * @param string $name
-     * @param array $arguments
-     *
-     * @return MonadInterface
-     */
-    public function __call($name, array $arguments)
-    {
-        return $this->bind(function($value) use ($name, $arguments) {
-            return static::unit(
-                call_user_func([$value, $name], $arguments)
-            );
-        });
     }
 }

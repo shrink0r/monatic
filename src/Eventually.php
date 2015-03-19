@@ -6,7 +6,7 @@ namespace Shrink0r\Monatic;
  * Wraps a given callable, which will eventually invoke a given success callback, when it can provide a value.
  * Basically this allows to chain async calls in a straight line without nesting callbacks.
  */
-class Eventually extends Monad
+class Eventually implements MonadInterface
 {
     /**
      * @var callable $codeBlock
@@ -97,10 +97,5 @@ class Eventually extends Monad
     protected function run(callable $success = null)
     {
         call_user_func($this->codeBlock, $success);
-    }
-
-    public function __call($name, array $arguments)
-    {
-        return $this;
     }
 }
