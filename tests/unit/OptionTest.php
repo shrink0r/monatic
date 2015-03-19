@@ -68,4 +68,23 @@ class OptionTest extends PHPUnit_Framework_TestCase
         $this->assertNull($title->unwrap());
         $this->assertInstanceOf(None::CLASS, $title);
     }
+
+    public function testCallChainValid()
+    {
+        $article = new Article('monads hurray', 'I can haz monads and so can haz you!');
+        $category = new Category('programming', [ $article ]);
+
+        $title = Option::wrap($category)->getFirstArticle()->getTitle();
+
+        $this->assertEquals($article->getTitle(), $title->unwrap());
+    }
+
+    public function testCallChainInvalid()
+    {
+        $category = new Category('programming', [ ]);
+
+        $title = Option::wrap($category)->getFirstArticle()->getTitle();
+
+        $this->assertInstanceOf(None::CLASS, $title);
+    }
 }

@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Wraps a given value, thereby providing fluent access to it's underlying properties.
  */
-class Option implements MonadInterface
+class Option extends AbstractMonad implements MonadInterface
 {
     /**
      * @var mixed $value;

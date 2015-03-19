@@ -8,10 +8,11 @@ class Article
 
     protected $text;
 
-    public function __construct($title, $text)
+    public function __construct($title, $text, array $tags = [])
     {
         $this->title = $title;
         $this->text = $text;
+        $this->tags = $tags;
     }
 
     public function getTitle()
@@ -22,5 +23,10 @@ class Article
     public function getText()
     {
         return $this->text;
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

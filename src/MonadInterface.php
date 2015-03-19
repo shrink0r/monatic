@@ -37,4 +37,15 @@ interface MonadInterface
      * @return MonadInterface
      */
     public function andThen(callable $codeBlock);
+
+
+    /**
+     * call an arbitrary method on the wrapped value
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return MonadInterface
+     */
+    public function __call($name, array $arguments);
 }
