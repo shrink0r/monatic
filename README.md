@@ -4,7 +4,9 @@
 
 Playing around with monads and php.
 
-## Option
+## Brief examples
+
+### Option
 
 Chained access to nested array/object values:
 
@@ -27,7 +29,7 @@ echo get_class(Option::wrap($data)->foo->snafu);
 ?>
 ```
 
-## Many
+### Many
 
 Chained access across recursive collections:
 
@@ -80,7 +82,7 @@ echo implode(', ', Many::wrap($data)->snafu->articles->title->unwrap());
 ?>
 ```
 
-## ManyOption
+### ManyOption
 
 Similar to ```Many```. The difference is, that the ```$value```, that is passed to ```andThen```'s callback is guaranteed to be an ```Option```:
 
@@ -107,7 +109,7 @@ echo implode(', ', array_unique($allWordsInTitles->unwrap()));
 ?>
 ```
 
-## Eventually
+### Eventually
 
 Chained execution of dependent method invocations that might execute asynchronously:
 
@@ -144,3 +146,12 @@ $eventually = $loadInitialData()->andThen($loadMoreData)->unwrap(
 
 ?>
 ```
+
+## Development
+
+Common tasks:
+
+* Run tests: ```./vendor/bin/phpunit```
+* Generate html docs: ```DOC_TYPE=html ./vendor/bin/sami.php update .sami.php```
+* Generate markdown docs: ```./vendor/bin/sami.php update .sami.php```
+* Run code-sniffer: ```./vendor/bin/phpcs --standard=PSR2 src/ tests/```
