@@ -24,7 +24,7 @@ echo Maybe::unit($data)->foo->snafu->get();
 // > (null)
 
 echo get_class(Maybe::unit($data)->foo->snafu);
-// > Shrink0r\\Monatic\\None
+// > Shrink0r\Monatic\None
 
 ?>
 ```
