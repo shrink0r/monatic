@@ -36,6 +36,6 @@ class None extends Maybe
      */
     public function get(callable $codeBlock = null)
     {
-        return parent::get();
+        return null;
     }
 }
