@@ -3,13 +3,7 @@
 MonadInterface
 ==============
 
-Specifies the behavior to be exposed by concrete monad implementations within &quot;monatic&quot;.
-
-Description
------------
-
-Wtf is a monad?
-https://en.wikipedia.org/wiki/Monad_(functional_programming)
+Specifies the behavior, that must be provided by concrete monad implementations within &quot;monatic&quot;.
 
 Signature
 ---------
@@ -21,12 +15,12 @@ Methods
 
 The interface defines the following methods:
 
-- [`wrap()`](#wrap) &mdash; Wrap the given value inside a specific MonadInterface implementation.
-- [`unwrap()`](#unwrap) &mdash; Unwrap the the value contained by a specific MonadInterface implementation.
-- [`andThen()`](#andThen) &mdash; Process the given $codeBlock in the context of the contained value
+- [`unit()`](#unit) &mdash; Wrap the given value inside a specific MonadInterface implementation.
+- [`get()`](#get) &mdash; Ununit the the value contained by a specific MonadInterface implementation.
+- [`bind()`](#bind) &mdash; Process the given $codeBlock in the context of the contained value
 and allow for continuation by returning a new monad instance.
 
-### `wrap()` <a name="wrap"></a>
+### `unit()` <a name="unit"></a>
 
 Wrap the given value inside a specific MonadInterface implementation.
 
@@ -37,9 +31,9 @@ Wrap the given value inside a specific MonadInterface implementation.
     - `$value` (`mixed`) &mdash; A value that is specific to a concrete monad.
 - It returns a(n) [`MonadInterface`](../../Shrink0r/Monatic/MonadInterface.md) value.
 
-### `unwrap()` <a name="unwrap"></a>
+### `get()` <a name="get"></a>
 
-Unwrap the the value contained by a specific MonadInterface implementation.
+Ununit the the value contained by a specific MonadInterface implementation.
 
 #### Description
 
@@ -52,7 +46,7 @@ In most cases the optonal $codeBlock allows to directly manipulate the value dur
     - `$codeBlock` (`callable`)
 - It returns a(n) `mixed` value.
 
-### `andThen()` <a name="andThen"></a>
+### `bind()` <a name="bind"></a>
 
 Process the given $codeBlock in the context of the contained value
 and allow for continuation by returning a new monad instance.

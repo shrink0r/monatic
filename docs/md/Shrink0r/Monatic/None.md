@@ -3,35 +3,35 @@
 None
 ====
 
-Acts as a null-object for the Option monad.
+Acts as a null-value for the Maybe monad.
 
 Signature
 ---------
 
 - It is a(n) **class**.
-- It is a subclass of [`Option`](../../Shrink0r/Monatic/Option.md).
+- It is a subclass of [`Maybe`](../../Shrink0r/Monatic/Maybe.md).
 
 Methods
 -------
 
 The class defines the following methods:
 
-- [`__construct()`](#__construct) &mdash; Creates a new None instance.
-- [`wrap()`](#wrap) &mdash; Wraps the given value inside a new None instance, effectively nulling the value.
-- [`unwrap()`](#unwrap) &mdash; Unwraps the None instance&#039;s (null)value.
+- [`__construct()`](#__construct) &mdash; Creates a new None monad.
+- [`unit()`](#unit) &mdash; Wrap the given value inside a specific MonadInterface implementation.
+- [`get()`](#get) &mdash; Ununit the the value contained by a specific MonadInterface implementation.
 
 ### `__construct()` <a name="__construct"></a>
 
-Creates a new None instance.
+Creates a new None monad.
 
 #### Signature
 
 - It is a **public** method.
 - It does not return anything.
 
-### `wrap()` <a name="wrap"></a>
+### `unit()` <a name="unit"></a>
 
-Wraps the given value inside a new None instance, effectively nulling the value.
+Wrap the given value inside a specific MonadInterface implementation.
 
 #### Signature
 
@@ -41,9 +41,13 @@ Wraps the given value inside a new None instance, effectively nulling the value.
 - _Returns:_ Returns None if the given value is null.
     - [`None`](../../Shrink0r/Monatic/None.md)
 
-### `unwrap()` <a name="unwrap"></a>
+### `get()` <a name="get"></a>
 
-Unwraps the None instance&#039;s (null)value.
+Ununit the the value contained by a specific MonadInterface implementation.
+
+#### Description
+
+In most cases the optonal $codeBlock allows to directly manipulate the value during retrieval.
 
 #### Signature
 

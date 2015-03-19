@@ -1,9 +1,9 @@
 <small>Shrink0r\Monatic</small>
 
-Many
-====
+Maybe
+=====
 
-Wraps a given collection, thereby providing recursive/fluent access to any underlying collections.
+Wraps a given value and provides fluent access to it&#039;s underlying properties.
 
 Signature
 ---------
@@ -20,8 +20,8 @@ The class defines the following methods:
 - [`get()`](#get) &mdash; Ununit the the value contained by a specific MonadInterface implementation.
 - [`bind()`](#bind) &mdash; Process the given $codeBlock in the context of the contained value
 and allow for continuation by returning a new monad instance.
-- [`__get()`](#__get) &mdash; Retrieves the Many value for the underlying collection-property by name.
-- [`__call()`](#__call) &mdash; Call an arbitrary method on the monad&#039;s value and return a new monad with the result.
+- [`__get()`](#__get) &mdash; Retrieves the monad&#039;s value for the underlying property by name.
+- [`__call()`](#__call) &mdash; Calls an arbitrary method on the monad&#039;s value and returns a monad with the result.
 
 ### `unit()` <a name="unit"></a>
 
@@ -31,7 +31,7 @@ Wrap the given value inside a specific MonadInterface implementation.
 
 - It is a **public static** method.
 - It accepts the following parameter(s):
-    - `$values` (`mixed`) &mdash; If the value isn&#039;t an array, a new array is created from it.
+    - `$value` (`mixed`) &mdash; A value that is specific to a concrete monad.
 - _Returns:_ Returns None if the given value is null.
     - [`Maybe`](../../Shrink0r/Monatic/Maybe.md)
 
@@ -48,7 +48,7 @@ In most cases the optonal $codeBlock allows to directly manipulate the value dur
 - It is a **public** method.
 - It accepts the following parameter(s):
     - `$codeBlock` (`callable`)
-- It returns a(n) `array` value.
+- It returns a(n) `mixed` value.
 
 ### `bind()` <a name="bind"></a>
 
@@ -59,19 +59,18 @@ and allow for continuation by returning a new monad instance.
 
 - It is a **public** method.
 - It accepts the following parameter(s):
-    - `$codeBlock` (`callable`)
-- It returns a(n) [`Many`](../../Shrink0r/Monatic/Many.md) value.
+    - `$codeBlock` (`callable`) &mdash; Is expected to return the next value to be unitped.
+- _Returns:_ Returns None if the next value is null.
+    - [`Maybe`](../../Shrink0r/Monatic/Maybe.md)
 
 ### `__get()` <a name="__get"></a>
 
-Retrieves the Many value for the underlying collection-property by name.
+Retrieves the monad&#039;s value for the underlying property by name.
 
 #### Description
 
-This allows to chain recursive collection access.
-Example: Many::unit($arr)-&gt;collection1_1-&gt;collection1_2-&gt;someKey-&gt;get();
-Will return all the values for &quot;someKey&quot; found within the elements of collection1_2,
-that are contained within the elements of collection1_1.
+This adds syntatic sugar to the Maybe monad, allowing to chain property/array access.
+Example: Maybe::unit($arr)-&gt;keyone-&gt;keytwo-&gt;etc-&gt;get();
 
 #### Signature
 
@@ -83,13 +82,13 @@ that are contained within the elements of collection1_1.
 
 ### `__call()` <a name="__call"></a>
 
-Call an arbitrary method on the monad&#039;s value and return a new monad with the result.
+Calls an arbitrary method on the monad&#039;s value and returns a monad with the result.
 
 #### Signature
 
 - It is a **public** method.
 - It accepts the following parameter(s):
-    - `$name` (`string`)
+    - `$methodName`
     - `$arguments` (`array`)
 - It returns a(n) [`MonadInterface`](../../Shrink0r/Monatic/MonadInterface.md) value.
 

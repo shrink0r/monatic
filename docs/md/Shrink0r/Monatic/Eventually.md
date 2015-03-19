@@ -8,7 +8,7 @@ Wraps a given callable, which will eventually invoke a given success callback, w
 Description
 -----------
 
-Basically this allows to chain async calls in a straight line, no callback nesting required.
+Basically this allows to chain async calls in a straight line without nesting callbacks.
 
 Signature
 ---------
@@ -21,13 +21,14 @@ Methods
 
 The class defines the following methods:
 
-- [`wrap()`](#wrap) &mdash; Wraps the given callable in a new Eventually instance.
-- [`unwrap()`](#unwrap) &mdash; Eventually provides the unwrapped value.
-- [`andThen()`](#andThen) &mdash; Invokes the given callable as soon as a value eventually becomes available.
+- [`unit()`](#unit) &mdash; Wrap the given value inside a specific MonadInterface implementation.
+- [`get()`](#get) &mdash; Ununit the the value contained by a specific MonadInterface implementation.
+- [`bind()`](#bind) &mdash; Process the given $codeBlock in the context of the contained value
+and allow for continuation by returning a new monad instance.
 
-### `wrap()` <a name="wrap"></a>
+### `unit()` <a name="unit"></a>
 
-Wraps the given callable in a new Eventually instance.
+Wrap the given value inside a specific MonadInterface implementation.
 
 #### Signature
 
@@ -36,14 +37,13 @@ Wraps the given callable in a new Eventually instance.
     - `$codeBlock` (`callable`)
 - It returns a(n) [`Eventually`](../../Shrink0r/Monatic/Eventually.md) value.
 
-### `unwrap()` <a name="unwrap"></a>
+### `get()` <a name="get"></a>
 
-Eventually provides the unwrapped value.
+Ununit the the value contained by a specific MonadInterface implementation.
 
 #### Description
 
-If the value can not be provided at the moment,
-a pointer to self is returned and the $codeBlock is executed when the value becomes available.
+In most cases the optonal $codeBlock allows to directly manipulate the value during retrieval.
 
 #### Signature
 
@@ -53,9 +53,10 @@ a pointer to self is returned and the $codeBlock is executed when the value beco
 - _Returns:_ Returns an instance of Eventually, if the value wasn&#039;t available yet.
     - `mixed`
 
-### `andThen()` <a name="andThen"></a>
+### `bind()` <a name="bind"></a>
 
-Invokes the given callable as soon as a value eventually becomes available.
+Process the given $codeBlock in the context of the contained value
+and allow for continuation by returning a new monad instance.
 
 #### Signature
 
