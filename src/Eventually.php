@@ -69,7 +69,7 @@ class Eventually extends Monad
      */
     public function bind(callable $codeBlock)
     {
-        assert($this->result === null, "'Eventually' instance may not be mutated after being getped.");
+        assert($this->result === null, "'Eventually' instance may not be mutated after code-block execution.");
 
         return static::unit(function ($success) use ($codeBlock) {
             $this->run(function ($value) use ($codeBlock, $success) {
