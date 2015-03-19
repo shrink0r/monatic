@@ -89,7 +89,7 @@ class Many implements MonadInterface
      */
     public function __call($name, array $arguments)
     {
-        return $this->bind(function($value) use ($name, $arguments) {
+        return $this->bind(function ($value) use ($name, $arguments) {
             return static::unit(
                 call_user_func([$value, $name], $arguments)
             );

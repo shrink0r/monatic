@@ -18,7 +18,7 @@ class EventuallyTest extends PHPUnit_Framework_TestCase
         // function that pretends it loads a list of urls from somewhere
         $loadUrls = function () use (&$callbackTriggers) {
             return Eventually::unit(function ($success) use (&$callbackTriggers) {
-                $callbackTriggers['urlsLoaded'] = function() use ($success) {
+                $callbackTriggers['urlsLoaded'] = function () use ($success) {
                     $success([ 'http://google.de', 'http://shrink.de' ]);
                 };
             });
@@ -28,7 +28,7 @@ class EventuallyTest extends PHPUnit_Framework_TestCase
         // it requires a list of urls to build on
         $loadUsers = function ($urls) use (&$callbackTriggers) {
             return Eventually::unit(function ($success) use (&$callbackTriggers) {
-                $callbackTriggers['usersLoaded'] = function() use ($success) {
+                $callbackTriggers['usersLoaded'] = function () use ($success) {
                     $success([ 'shrink0r', 'graste' ]);
                 };
             });

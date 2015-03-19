@@ -90,7 +90,7 @@ class Maybe implements MonadInterface
      */
     public function __call($methodName, array $arguments)
     {
-        return $this->bind(function($value) use ($methodName, $arguments) {
+        return $this->bind(function ($value) use ($methodName, $arguments) {
             $callable = [ $value, $methodName ];
 
             if (is_callable($callable)) {
