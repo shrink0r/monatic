@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Wraps a given array, thereby providing recursive+fluent access to any underlying collections.
  */
-class Many extends AbstractMonad implements MonadInterface
+class Many extends AbstractMonad
 {
     /**
      * @var array $values

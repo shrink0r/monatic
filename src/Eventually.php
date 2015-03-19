@@ -6,7 +6,7 @@ namespace Shrink0r\Monatic;
  * Wraps a given callable, which will eventually invoke a given success callback, when it can provide a value.
  * Basically this allows to chain async calls in a straight line, no callback nesting required.
  */
-class Eventually extends AbstractMonad implements MonadInterface
+class Eventually extends AbstractMonad
 {
     /**
      * @var callable $codeBlock
