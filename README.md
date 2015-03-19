@@ -98,12 +98,12 @@ $data = [
     // ... same definition as in the Many example
 ];
 
-$allWordsInTitles = ManyMaybe::unit($data)->categories->articles->bind(function (Maybe $article) {
+$titleWords = ManyMaybe::unit($data)->categories->articles->bind(function (Maybe $article) {
     // instead of relying on $article['title'] we can now use $article->title
     return ManyMaybe::unit(explode(' ', $article->title->get()));
 });
 
-echo implode(', ', array_unique($allWordsInTitles->get()));
+echo implode(', ', array_unique($titleWords->get()));
 // > foo, one, text, two, three, four
 
 ?>
