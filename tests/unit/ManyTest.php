@@ -4,6 +4,8 @@ namespace Shrink0r\Monatic\Tests;
 
 use Shrink0r\Monatic\Many;
 use Shrink0r\Monatic\Option;
+use Shrink0r\Monatic\Tests\Fixtures\Article;
+use Shrink0r\Monatic\Tests\Fixtures\Category;
 use PHPUnit_Framework_TestCase;
 
 class ManyTest extends PHPUnit_Framework_TestCase
@@ -102,5 +104,27 @@ class ManyTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals([], $titleWords->unwrap());
+    }
+
+    public function testCallChainValid()
+    {
+        $article1 = new Article('monads hurray 1', '', ['one', 'two']);
+        $article2 = new Article('monads hurray 2', '', ['foo', 'bar']);
+        $category = new Category('programming', [ $article1, $article2 ]);
+
+        $tags = Many::wrap($category)->getArticles()->getTags();
+
+        $this->assertEquals(['one', 'two', 'foo', 'bar'], $tags->unwrap());
+    }
+
+    public function testCallChainInvalid()
+    {
+        $article1 = new Article('monads hurray 1', '');
+        $article2 = new Article('monads hurray 2', '');
+        $category = new Category('programming', [ $article1, $article2 ]);
+
+        $tags = Many::wrap($category)->getArticles()->getTags();
+
+        $this->assertEquals([], $tags->unwrap());
     }
 }

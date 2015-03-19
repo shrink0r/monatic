@@ -23,4 +23,9 @@ class Category
     {
         return reset($this->articles) ?: null;
     }
+
+    public function getArticles()
+    {
+        return $this->articles;
+    }
 }

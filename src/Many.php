@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Wraps a given array, thereby providing recursive+fluent access to any underlying collections.
  */
-class Many implements MonadInterface
+class Many extends AbstractMonad implements MonadInterface
 {
     /**
      * @var array $values
@@ -134,5 +134,23 @@ class Many implements MonadInterface
         }
 
         return array_merge($flattened, $unwrapped);
+    }
+
+    /**
+     * call an arbitrary method on the wrapped value
+     * and wrap the result again.
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return MonadInterface
+     */
+    public function __call($name, array $arguments)
+    {
+        return $this->andThen(function($value) use ($name, $arguments) {
+            return static::wrap(
+                call_user_func([$value, $name], $arguments)
+            );
+        });
     }
 }
