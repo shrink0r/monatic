@@ -44,7 +44,7 @@ class Eventually extends Monad
     public function get(callable $codeBlock = null)
     {
         if ($this->result === null) {
-            $this->run(function ($value) use (&$codeBlock) {
+            $this->run(function ($value) use ($codeBlock) {
                 $this->result = $value;
                 if (is_callable($codeBlock)) {
                     $codeBlock($this->result);
@@ -71,8 +71,8 @@ class Eventually extends Monad
     {
         assert($this->result === null, "'Eventually' instance may not be mutated after being getped.");
 
-        return static::unit(function ($success) use (&$codeBlock) {
-            $this->run(function ($value) use (&$codeBlock, $success) {
+        return static::unit(function ($success) use ($codeBlock) {
+            $this->run(function ($value) use ($codeBlock, $success) {
                 return $codeBlock($value)->run($success);
             });
         });
