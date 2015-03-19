@@ -149,6 +149,8 @@ $eventually = $loadInitialData()->andThen($loadMoreData)->unwrap(
 
 ## Development
 
+[Markdown API-Doc](docs/md/2. Classes.md)
+
 Common tasks:
 
 * Run tests: ```./vendor/bin/phpunit```
