@@ -96,6 +96,7 @@ $data = [
 
 $allWordsInTitles = ManyOption::wrap($data)->categories->articles->andThen(
     function (Option $article) {
+        // instead of relying on $article['title'] we can now use $article->title
         return ManyOption::wrap(explode(' ', $article->title->unwrap()));
     }
 );
@@ -126,6 +127,7 @@ $loadInitialData = function () {
 $loadMoreData = function ($initialData) {
     return Eventually::wrap(
         function ($success) use ($initialData) {
+            // this is where you would call your async code and pass it along the $success callback
             $success(
                 array_merge($initialData, [ 'ruby', 'rust', 'erlang' ])
             );
