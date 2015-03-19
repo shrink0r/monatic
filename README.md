@@ -2,6 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/shrink0r/monatic.png)](http://travis-ci.org/shrink0r/monatic)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/shrink0r/monatic/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/shrink0r/monatic/?branch=master)
+[![Dependency Status](https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d)
 
 Playing around with monads and php.
 
