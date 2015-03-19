@@ -5,9 +5,9 @@ namespace Shrink0r\Monatic;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * Wraps a given value, thereby providing fluent access to it's underlying properties.
+ * Wraps a given value and provides fluent access to it's underlying properties.
  */
-class Option extends AbstractMonad
+class Maybe extends Monad
 {
     /**
      * @var mixed $value;
@@ -20,25 +20,25 @@ class Option extends AbstractMonad
     private $accessor;
 
     /**
-     * Wraps the given value inside a new Option instance.
+     * Wraps the given value inside a new Maybe monad.
      *
      * @param mixed $value
      *
-     * @return Option Returns None if the given value is null.
+     * @return Maybe Returns None if the given value is null.
      */
-    public static function wrap($value)
+    public static function unit($value)
     {
         return ($value === null) ? new None : new static($value);
     }
 
     /**
-     * Unwraps the Option's value and applies the optional $codeBlock before returning it.
+     * Returns the monad's value and applies an optional code-block before returning it.
      *
      * @param callable $codeBlock
      *
      * @return mixed
      */
-    public function unwrap(callable $codeBlock = null)
+    public function get(callable $codeBlock = null)
     {
         if (is_callable($codeBlock)) {
             return call_user_func($codeBlock, $this->value);
@@ -48,54 +48,52 @@ class Option extends AbstractMonad
     }
 
     /**
-     * Runs the given $codeBlock on the Option's value, if the value isn't null.
+     * Runs the given code-block on the monad's value, if the value isn't null.
      *
-     * @param callable $codeBlock Is expected to return the next value to be wrapped.
+     * @param callable $codeBlock Is expected to return the next value to be unitped.
      *
-     * @return Option Returns None if the next value is null.
+     * @return Maybe Returns None if the next value is null.
      */
-    public function andThen(callable $codeBlock)
+    public function bind(callable $codeBlock)
     {
         if ($this->value === null) {
             return new None;
         } else {
-            return static::wrap(call_user_func($codeBlock, $this->value));
+            return static::unit(call_user_func($codeBlock, $this->value));
         }
     }
 
     /**
-     * Retrieves the Option value for the underlying property by name.
+     * Retrieves the monad's value for the underlying property by name.
      *
-     * This adds syntatic sugar to the Option monad, allowing to chain property/array access.
-     * Example: Option::wrap($arr)->keyone->keytwo->etc->unwrap();
+     * This adds syntatic sugar to the Maybe monad, allowing to chain property/array access.
+     * Example: Maybe::unit($arr)->keyone->keytwo->etc->get();
      *
      * @param string $propertyName
      *
-     * @return Option Returns None if the property/key doesn't exist or equals null.
+     * @return Maybe Returns None if the property/key doesn't exist or equals null.
      */
     public function __get($propertyName)
     {
-        return $this->andThen(
-            function ($value) use ($propertyName) {
-                return $this->accessValue($value, $propertyName);
-            }
-        );
+        return $this->bind(function ($value) use ($propertyName) {
+            return $this->accessValue($value, $propertyName);
+        });
     }
 
     /**
-     * Creates a new Option instance, that wraps the given value.
+     * Creates a new Maybe monad.
      *
      * @param mixed $value
      */
     protected function __construct($value)
     {
-        $this->value = ($value instanceof MonadInterface) ? $value->unwrap() : $value;
+        $this->value = ($value instanceof MonadInterface) ? $value->get() : $value;
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
-     * Internal helper method that is used to retrieve an underlying value from a given object/array.
-     * If the given context(value) is scalar, it is returned as it was given.
+     * Internal helper method that is used to retrieve an underlying value from a given context (object/array).
+     * If the given context is scalar, it is returned as the resulting value.
      *
      * @param mixed $context The context to retrieve the value from.
      * @param string $key The property-name/array-key to use in order to read the value from the $context.

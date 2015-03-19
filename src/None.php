@@ -3,12 +3,12 @@
 namespace Shrink0r\Monatic;
 
 /**
- * Acts as a null-object for the Option monad.
+ * Acts as a null-value for the Maybe monad.
  */
-class None extends Option
+class None extends Maybe
 {
     /**
-     * Creates a new None instance.
+     * Creates a new None monad.
      */
     public function __construct()
     {
@@ -16,26 +16,26 @@ class None extends Option
     }
 
     /**
-     * Wraps the given value inside a new None instance, effectively nulling the value.
+     * Wraps the given value inside a new None monad, effectively nulling the value.
      *
      * @param mixed $value
      *
      * @return None
      */
-    public static function wrap($value)
+    public static function unit($value)
     {
         return new static(null);
     }
 
     /**
-     * Unwraps the None instance's (null)value.
+     * Returns the monad's value (always null).
      *
      * @param callable $codeBlock Is never executed for this type.
      *
      * @return null
      */
-    public function unwrap(callable $codeBlock = null)
+    public function get(callable $codeBlock = null)
     {
-        return parent::unwrap();
+        return parent::get();
     }
 }

@@ -4,9 +4,9 @@ namespace Shrink0r\Monatic;
 
 /**
  * Wraps a given callable, which will eventually invoke a given success callback, when it can provide a value.
- * Basically this allows to chain async calls in a straight line, no callback nesting required.
+ * Basically this allows to chain async calls in a straight line without nesting callbacks.
  */
-class Eventually extends AbstractMonad
+class Eventually extends Monad
 {
     /**
      * @var callable $codeBlock
@@ -25,7 +25,7 @@ class Eventually extends AbstractMonad
      *
      * @return Eventually
      */
-    public static function wrap($codeBlock)
+    public static function unit($codeBlock)
     {
         assert(is_callable($codeBlock), "'Eventually' can only be created from callables.");
 
@@ -33,7 +33,7 @@ class Eventually extends AbstractMonad
     }
 
     /**
-     * Eventually provides the unwrapped value.
+     * Eventually provides the a value resulting from running the monad's code-block.
      * If the value can not be provided at the moment,
      * a pointer to self is returned and the $codeBlock is executed when the value becomes available.
      *
@@ -41,17 +41,15 @@ class Eventually extends AbstractMonad
      *
      * @return mixed Returns an instance of Eventually, if the value wasn't available yet.
      */
-    public function unwrap(callable $codeBlock = null)
+    public function get(callable $codeBlock = null)
     {
         if ($this->result === null) {
-            $this->run(
-                function ($value) use (&$codeBlock) {
-                    $this->result = $value;
-                    if (is_callable($codeBlock)) {
-                        $codeBlock($this->result);
-                    }
+            $this->run(function ($value) use (&$codeBlock) {
+                $this->result = $value;
+                if (is_callable($codeBlock)) {
+                    $codeBlock($this->result);
                 }
-            );
+            });
 
             return $this;
         } else {
@@ -63,25 +61,21 @@ class Eventually extends AbstractMonad
     }
 
     /**
-     * Invokes the given callable as soon as a value eventually becomes available.
+     * Binds the given callable to the monad's managed code-block's successful execution.
      *
      * @param callable $codeBlock Is expected to return an instance of Eventually.
      *
      * @return Eventually
      */
-    public function andThen(callable $codeBlock)
+    public function bind(callable $codeBlock)
     {
-        assert($this->result === null, "'Eventually' instance may not be mutated after being unwrapped.");
+        assert($this->result === null, "'Eventually' instance may not be mutated after being getped.");
 
-        return static::wrap(
-            function ($success) use (&$codeBlock) {
-                $this->run(
-                    function ($value) use (&$codeBlock, $success) {
-                        return $codeBlock($value)->run($success);
-                    }
-                );
-            }
-        );
+        return static::unit(function ($success) use (&$codeBlock) {
+            $this->run(function ($value) use (&$codeBlock, $success) {
+                return $codeBlock($value)->run($success);
+            });
+        });
     }
 
     /**

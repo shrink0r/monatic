@@ -4,11 +4,11 @@ namespace Shrink0r\Monatic\Tests;
 
 use Shrink0r\Monatic\Tests\Fixtures\Article;
 use Shrink0r\Monatic\Tests\Fixtures\Category;
-use Shrink0r\Monatic\Option;
+use Shrink0r\Monatic\Maybe;
 use Shrink0r\Monatic\None;
 use PHPUnit_Framework_TestCase;
 
-class OptionTest extends PHPUnit_Framework_TestCase
+class MaybeTest extends PHPUnit_Framework_TestCase
 {
     public function testAndThenValid()
     {
@@ -24,9 +24,9 @@ class OptionTest extends PHPUnit_Framework_TestCase
             ]
         ];
 
-        $weather = Option::wrap($data)->creator->address->country->capital->weather;
+        $weather = Maybe::unit($data)->creator->address->country->capital->weather;
 
-        $this->assertEquals('sunny', $weather->unwrap());
+        $this->assertEquals('sunny', $weather->get());
     }
 
     public function testAndThenInvalid()
@@ -43,9 +43,9 @@ class OptionTest extends PHPUnit_Framework_TestCase
             ]
         ];
 
-        $weather = Option::wrap($data)->creator->address->country->capital->weather;
+        $weather = Maybe::unit($data)->creator->address->country->capital->weather;
 
-        $this->assertNull($weather->unwrap());
+        $this->assertNull($weather->get());
         $this->assertInstanceOf(None::CLASS, $weather);
     }
 
@@ -54,18 +54,18 @@ class OptionTest extends PHPUnit_Framework_TestCase
         $article = new Article('monads hurray', 'I can haz monads and so can haz you!');
         $category = new Category('programming', [ $article ]);
 
-        $title = Option::wrap($category)->firstArticle->title;
+        $title = Maybe::unit($category)->firstArticle->title;
 
-        $this->assertEquals($article->getTitle(), $title->unwrap());
+        $this->assertEquals($article->getTitle(), $title->get());
     }
 
     public function testAndThenInvalidObject()
     {
         $category = new Category('programming');
 
-        $title = Option::wrap($category)->firstArticle->title;
+        $title = Maybe::unit($category)->firstArticle->title;
 
-        $this->assertNull($title->unwrap());
+        $this->assertNull($title->get());
         $this->assertInstanceOf(None::CLASS, $title);
     }
 
@@ -74,16 +74,16 @@ class OptionTest extends PHPUnit_Framework_TestCase
         $article = new Article('monads hurray', 'I can haz monads and so can haz you!');
         $category = new Category('programming', [ $article ]);
 
-        $title = Option::wrap($category)->getFirstArticle()->getTitle();
+        $title = Maybe::unit($category)->getFirstArticle()->getTitle();
 
-        $this->assertEquals($article->getTitle(), $title->unwrap());
+        $this->assertEquals($article->getTitle(), $title->get());
     }
 
     public function testCallChainInvalid()
     {
         $category = new Category('programming', [ ]);
 
-        $title = Option::wrap($category)->getFirstArticle()->getTitle();
+        $title = Maybe::unit($category)->getFirstArticle()->getTitle();
 
         $this->assertInstanceOf(None::CLASS, $title);
     }

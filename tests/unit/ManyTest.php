@@ -3,7 +3,7 @@
 namespace Shrink0r\Monatic\Tests;
 
 use Shrink0r\Monatic\Many;
-use Shrink0r\Monatic\Option;
+use Shrink0r\Monatic\Maybe;
 use Shrink0r\Monatic\Tests\Fixtures\Article;
 use Shrink0r\Monatic\Tests\Fixtures\Category;
 use PHPUnit_Framework_TestCase;
@@ -47,19 +47,15 @@ class ManyTest extends PHPUnit_Framework_TestCase
 
         $expectedWords = [ 'article', 'one', 'article', 'two', 'article', 'three', 'article', 'four'];
 
-        $titleWords = Many::wrap($blogs)->categories->articles->andThen(
-            function ($article) {
-                return Many::wrap(explode(' ', $article['title']));
-            }
-        );
-        $this->assertEquals($expectedWords, $titleWords->unwrap());
+        $titleWords = Many::unit($blogs)->categories->articles->bind(function ($article) {
+            return Many::unit(explode(' ', $article['title']));
+        });
+        $this->assertEquals($expectedWords, $titleWords->get());
 
-        $titleWords = Many::wrap($blogs)->categories->articles->title->andThen(
-            function ($title) {
-                return Many::wrap(explode(' ', $title));
-            }
-        );
-        $this->assertEquals($expectedWords, $titleWords->unwrap());
+        $titleWords = Many::unit($blogs)->categories->articles->title->bind(function ($title) {
+            return Many::unit(explode(' ', $title));
+        });
+        $this->assertEquals($expectedWords, $titleWords->get());
     }
 
     public function testAndThenInvalid()
@@ -97,13 +93,11 @@ class ManyTest extends PHPUnit_Framework_TestCase
             ]
         ];
 
-        $titleWords = Many::wrap($blogs)->categories->articles->andThen(
-            function ($article) {
-                return Many::wrap(explode(' ', $article['title']));
-            }
-        );
+        $titleWords = Many::unit($blogs)->categories->articles->bind(function ($article) {
+            return Many::unit(explode(' ', $article['title']));
+        });
 
-        $this->assertEquals([], $titleWords->unwrap());
+        $this->assertEquals([], $titleWords->get());
     }
 
     public function testCallChainValid()
@@ -112,9 +106,9 @@ class ManyTest extends PHPUnit_Framework_TestCase
         $article2 = new Article('monads hurray 2', '', ['foo', 'bar']);
         $category = new Category('programming', [ $article1, $article2 ]);
 
-        $tags = Many::wrap($category)->getArticles()->getTags();
+        $tags = Many::unit($category)->getArticles()->getTags();
 
-        $this->assertEquals(['one', 'two', 'foo', 'bar'], $tags->unwrap());
+        $this->assertEquals(['one', 'two', 'foo', 'bar'], $tags->get());
     }
 
     public function testCallChainInvalid()
@@ -123,8 +117,8 @@ class ManyTest extends PHPUnit_Framework_TestCase
         $article2 = new Article('monads hurray 2', '');
         $category = new Category('programming', [ $article1, $article2 ]);
 
-        $tags = Many::wrap($category)->getArticles()->getTags();
+        $tags = Many::unit($category)->getArticles()->getTags();
 
-        $this->assertEquals([], $tags->unwrap());
+        $this->assertEquals([], $tags->get());
     }
 }

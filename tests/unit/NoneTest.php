@@ -9,22 +9,22 @@ class NoneTest extends PHPUnit_Framework_TestCase
 {
     public function testAndThen()
     {
-        $none = None::wrap(23)->foobar;
+        $none = None::unit(23)->foobar;
 
-        $this->assertNull($none->unwrap());
+        $this->assertNull($none->get());
     }
 
     public function testCreate()
     {
         $none = new None;
 
-        $this->assertNull($none->unwrap());
+        $this->assertNull($none->get());
     }
 
     public function testWrap()
     {
-        $none = None::wrap(23);
+        $none = None::unit(23);
 
-        $this->assertNull($none->unwrap());
+        $this->assertNull($none->get());
     }
 }

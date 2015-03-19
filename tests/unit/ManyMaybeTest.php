@@ -3,11 +3,11 @@
 namespace Shrink0r\Monatic\Tests;
 
 use Shrink0r\Monatic\Many;
-use Shrink0r\Monatic\Option;
-use Shrink0r\Monatic\ManyOption;
+use Shrink0r\Monatic\Maybe;
+use Shrink0r\Monatic\ManyMaybe;
 use PHPUnit_Framework_TestCase;
 
-class ManyOptionTest extends PHPUnit_Framework_TestCase
+class ManyMaybeTest extends PHPUnit_Framework_TestCase
 {
     public function testAndThenValid()
     {
@@ -46,19 +46,15 @@ class ManyOptionTest extends PHPUnit_Framework_TestCase
 
         $expectedWords = [ 'article', 'one', 'article', 'two', 'article', 'three', 'article', 'four'];
 
-        $titleWords = ManyOption::wrap($blogs)->categories->articles->andThen(
-            function ($optArticle) {
-                return ManyOption::wrap(explode(' ', $optArticle->title->unwrap()));
-            }
-        );
-        $this->assertEquals($expectedWords, $titleWords->unwrap());
+        $titleWords = ManyMaybe::unit($blogs)->categories->articles->bind(function ($optArticle) {
+            return ManyMaybe::unit(explode(' ', $optArticle->title->get()));
+        });
+        $this->assertEquals($expectedWords, $titleWords->get());
 
-        $titleWords = ManyOption::wrap($blogs)->categories->articles->title->andThen(
-            function ($optTitle) {
-                return ManyOption::wrap(explode(' ', $optTitle->unwrap()));
-            }
-        );
-        $this->assertEquals($expectedWords, $titleWords->unwrap());
+        $titleWords = ManyMaybe::unit($blogs)->categories->articles->title->bind(function ($optTitle) {
+            return ManyMaybe::unit(explode(' ', $optTitle->get()));
+        });
+        $this->assertEquals($expectedWords, $titleWords->get());
     }
 
     public function stestAndThenInvalid()
@@ -96,12 +92,10 @@ class ManyOptionTest extends PHPUnit_Framework_TestCase
             ]
         ];
 
-        $titleWords = ManyOption::wrap($blogs)->categories->articles->andThen(
-            function ($optArticle) {
-                return ManyOption::wrap(explode(' ', $optArticle->title->unwrap()));
-            }
-        );
+        $titleWords = ManyMaybe::unit($blogs)->categories->articles->bind(function ($optArticle) {
+            return ManyMaybe::unit(explode(' ', $optArticle->title->get()));
+        });
 
-        $this->assertEquals([], $titleWords->unwrap());
+        $this->assertEquals([], $titleWords->get());
     }
 }

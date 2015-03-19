@@ -17,36 +17,30 @@ class EventuallyTest extends PHPUnit_Framework_TestCase
 
         // function that pretends it loads a list of urls from somewhere
         $loadUrls = function () use (&$callbackTriggers) {
-            return Eventually::wrap(
-                function ($success) use (&$callbackTriggers) {
-                    $callbackTriggers['urlsLoaded'] = function() use ($success) {
-                        $success([ 'http://google.de', 'http://shrink.de' ]);
-                    };
-                }
-            );
+            return Eventually::unit(function ($success) use (&$callbackTriggers) {
+                $callbackTriggers['urlsLoaded'] = function() use ($success) {
+                    $success([ 'http://google.de', 'http://shrink.de' ]);
+                };
+            });
         };
 
         // function that pretends it loads a list of usernames from somewhere
         // it requires a list of urls to build on
         $loadUsers = function ($urls) use (&$callbackTriggers) {
-            return Eventually::wrap(
-                function ($success) use (&$callbackTriggers) {
-                    $callbackTriggers['usersLoaded'] = function() use ($success) {
-                        $success([ 'shrink0r', 'graste' ]);
-                    };
-                }
-            );
+            return Eventually::unit(function ($success) use (&$callbackTriggers) {
+                $callbackTriggers['usersLoaded'] = function() use ($success) {
+                    $success([ 'shrink0r', 'graste' ]);
+                };
+            });
         };
 
         $loadedUsers = [];
         // chain the loadUrls and loadUsers functions and do something with the users when they become available
-        $eventually = $loadUrls()->andThen($loadUsers)->unwrap(
-            function ($users) use (&$loadedUsers) {
-                foreach ($users as $user) {
-                    $loadedUsers[] = $user;
-                }
+        $eventually = $loadUrls()->bind($loadUsers)->get(function ($users) use (&$loadedUsers) {
+            foreach ($users as $user) {
+                $loadedUsers[] = $user;
             }
-        );
+        });
 
         // simulate events firing later
         $callbackTriggers['urlsLoaded']();
@@ -59,34 +53,28 @@ class EventuallyTest extends PHPUnit_Framework_TestCase
     {
         // function that immediately provides a list of urls from somewhere
         $loadUrls = function () {
-            return Eventually::wrap(
-                function ($success) {
-                    $success([ 'http://google.de', 'http://shrink.de' ]);
-                }
-            );
+            return Eventually::unit(function ($success) {
+                $success([ 'http://google.de', 'http://shrink.de' ]);
+            });
         };
 
         // function that immediately provides a list of usernames
         $loadUsers = function ($urls) {
-            return Eventually::wrap(
-                function ($success) {
-                    $success([ 'shrink0r', 'graste' ]);
-                }
-            );
+            return Eventually::unit(function ($success) {
+                $success([ 'shrink0r', 'graste' ]);
+            });
         };
 
         $loadedUsers = [];
         // chain the loadUrls and loadUsers functions
-        $eventually = $loadUrls()->andThen($loadUsers)->unwrap(
-            function ($users) use (&$loadedUsers) {
-                foreach ($users as $user) {
-                    $loadedUsers[] = $user;
-                }
+        $eventually = $loadUrls()->bind($loadUsers)->get(function ($users) use (&$loadedUsers) {
+            foreach ($users as $user) {
+                $loadedUsers[] = $user;
             }
-        );
+        });
 
         $expectedUsers = [ 'shrink0r', 'graste' ];
         $this->assertEquals($expectedUsers, $loadedUsers);
-        $this->assertEquals($expectedUsers, $eventually->unwrap());
+        $this->assertEquals($expectedUsers, $eventually->get());
     }
 }

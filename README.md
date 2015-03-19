@@ -6,24 +6,24 @@ Playing around with monads and php.
 
 ## Brief examples
 
-### Option
+### Maybe
 
 Chained access to nested array/object values:
 
 ```php
 <?php
 
-use Shrink0r\Monatic\Option;
+use Shrink0r\Monatic\Maybe;
 
 $data = [ "foo" => [ "bar" => "hello world!"] ];
 
-echo Option::wrap($data)->foo->bar->unwrap();
+echo Maybe::unit($data)->foo->bar->get();
 // > hello world!
 
-echo Option::wrap($data)->foo->snafu->unwrap();
+echo Maybe::unit($data)->foo->snafu->get();
 // > (null)
 
-echo get_class(Option::wrap($data)->foo->snafu);
+echo get_class(Maybe::unit($data)->foo->snafu);
 // > Shrink0r\\Monatic\\None
 
 ?>
@@ -73,37 +73,35 @@ $data = [
     ]
 ];
 
-echo implode(', ', Many::wrap($data)->categories->articles->title->unwrap());
+echo implode(', ', Many::unit($data)->categories->articles->title->get());
 // > foo one text, foo two text, foo three text, foo four text
 
-echo implode(', ', Many::wrap($data)->snafu->articles->title->unwrap());
+echo implode(', ', Many::unit($data)->snafu->articles->title->get());
 // > (empty string)
 
 ?>
 ```
 
-### ManyOption
+### ManyMaybe
 
-Similar to ```Many```. The difference is, that the ```$value```, that is passed to ```andThen```'s callback is guaranteed to be an ```Option```:
+Similar to ```Many```. The difference is, that the ```$value```, that is passed to ```bind```'s callback is guaranteed to be a ```Maybe``` monad:
 
 ```php
 <?php
 
-use Shrink0r\Monatic\ManyOption;
-use Shrink0r\Monatic\Option;
+use Shrink0r\Monatic\ManyMaybe;
+use Shrink0r\Monatic\Maybe;
 
 $data = [
     // ... same definition as in the Many example
 ];
 
-$allWordsInTitles = ManyOption::wrap($data)->categories->articles->andThen(
-    function (Option $article) {
-        // instead of relying on $article['title'] we can now use $article->title
-        return ManyOption::wrap(explode(' ', $article->title->unwrap()));
-    }
-);
+$allWordsInTitles = ManyMaybe::unit($data)->categories->articles->bind(function (Maybe $article) {
+    // instead of relying on $article['title'] we can now use $article->title
+    return ManyMaybe::unit(explode(' ', $article->title->get()));
+});
 
-echo implode(', ', array_unique($allWordsInTitles->unwrap()));
+echo implode(', ', array_unique($allWordsInTitles->get()));
 // > foo, one, text, two, three, four
 
 ?>
@@ -119,29 +117,21 @@ Chained execution of dependent method invocations that might execute asynchronou
 use Shrink0r\Monatic\Eventually;
 
 $loadInitialData = function () {
-    return Eventually::wrap(
-        function ($success) {
-            $success([ 'php', 'python' ]);
-        }
-    );
+    return Eventually::unit(function ($success) {
+        $success([ 'php', 'python' ]);
+    });
 };
 
 $loadMoreData = function ($initialData) {
-    return Eventually::wrap(
-        function ($success) use ($initialData) {
-            // this is where you would call your async code and pass it along the $success callback
-            $success(
-                array_merge($initialData, [ 'ruby', 'rust', 'erlang' ])
-            );
-        }
-    );
+    return Eventually::unit(function ($success) use ($initialData) {
+        // this is where you would call your async code and pass it along the $success callback
+        $success(array_merge($initialData, [ 'ruby', 'rust', 'erlang' ]));
+    });
 };
 
-$eventually = $loadInitialData()->andThen($loadMoreData)->unwrap(
-    function ($finalData) {
-        echo implode(", ", $finalData);
-    }
-);
+$eventually = $loadInitialData()->bind($loadMoreData)->get(function ($finalData) {
+    echo implode(", ", $finalData);
+});
 // > php, python, ruby, rust, erlang
 
 ?>

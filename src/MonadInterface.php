@@ -3,9 +3,7 @@
 namespace Shrink0r\Monatic;
 
 /**
- * Specifies the behavior to be exposed by concrete monad implementations within "monatic".
- * Wtf is a monad?
- * https://en.wikipedia.org/wiki/Monad_(functional_programming)
+ * Specifies the behavior, that must be provided by concrete monad implementations within "monatic".
  */
 interface MonadInterface
 {
@@ -16,17 +14,17 @@ interface MonadInterface
      *
      * @return MonadInterface
      */
-    public static function wrap($value);
+    public static function unit($value);
 
     /**
-     * Unwrap the the value contained by a specific MonadInterface implementation.
+     * Ununit the the value contained by a specific MonadInterface implementation.
      * In most cases the optonal $codeBlock allows to directly manipulate the value during retrieval.
      *
      * @param callable $codeBlock
      *
      * @return mixed
      */
-    public function unwrap(callable $codeBlock = null);
+    public function get(callable $codeBlock = null);
 
     /**
      * Process the given $codeBlock in the context of the contained value
@@ -36,11 +34,11 @@ interface MonadInterface
      *
      * @return MonadInterface
      */
-    public function andThen(callable $codeBlock);
+    public function bind(callable $codeBlock);
 
 
     /**
-     * call an arbitrary method on the wrapped value
+     * call an arbitrary method on the unitped value
      *
      * @param string $name
      * @param array $arguments
