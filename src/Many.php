@@ -140,12 +140,12 @@ class Many implements MonadInterface
      */
     protected function flatMap(array $flattened, MonadInterface $result)
     {
-        $getped = $result->get();
+        $value = $result->get();
 
-        if (!is_array($getped)) {
-            $getped = [ $getped ];
+        if (!is_array($value)) {
+            $value = [ $value ];
         }
 
-        return array_merge($flattened, $getped);
+        return array_merge($flattened, $value);
     }
 }

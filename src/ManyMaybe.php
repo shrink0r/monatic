@@ -16,12 +16,8 @@ class ManyMaybe extends Many
      */
     public function get(callable $codeBlock = null)
     {
-        $getValue = function ($value) {
-            if ($value instanceof MonadInterface) {
-                return $value->get();
-            } else {
-                return $value;
-            }
+        $getValue = function (Maybe $value) {
+            return $value->get();
         };
 
         return array_map($getValue, parent::get($codeBlock));
@@ -35,10 +31,10 @@ class ManyMaybe extends Many
      */
     protected function __construct(array $values)
     {
-        $unitValue = function ($value) {
+        $unit = function ($value) {
             return Maybe::unit($value);
         };
 
-        parent::__construct(array_map($unitValue, $values));
+        parent::__construct(array_map($unit, $values));
     }
 }
