@@ -94,7 +94,7 @@ class Maybe implements MonadInterface
             $callable = [ $value, $methodName ];
 
             if (is_callable($callable)) {
-                $result = call_user_func([$value, $methodName], $arguments);
+                $result = call_user_func_array([$value, $methodName], $arguments);
             } else {
                 $result = null;
             }

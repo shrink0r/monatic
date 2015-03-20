@@ -140,6 +140,44 @@ $eventually = $loadInitialData()->bind($loadMoreData)->get(function ($finalData)
 ?>
 ```
 
+### Attempt
+
+Chained execution of dependent method invocations that might throw an exception.
+In case an exception is raised along the way, then an Error is returned in the end.
+
+```php
+<?php
+
+use Shrink0r\Monatic\Attempt;
+
+// Success case example:
+$loadInitialData = function (Success $result) {
+    return [ 'php', 'python' ];
+};
+$loadMoreData = function (Success $result) {
+    return array_merge($result->get(), [ 'ruby', 'rust', 'erlang' ]);
+};
+
+$result = Attempt::unit($loadInitialData)->bind($loadMoreData)->get();
+echo implode(", ", $result->get()); // $result is a Success monad
+// > php, python, ruby, rust, erlang
+
+
+// Error case example:
+$loadInitialData = function (Success $result) {
+    throw new Exception("An error occured!");
+};
+$loadMoreData = function (Success $result) {
+    return array_merge($result->get(), [ 'ruby', 'rust', 'erlang' ]);
+};
+
+$result = Attempt::unit($loadInitialData)->bind($loadMoreData)->get();
+echo $result->get()->getMessage(); // $result is an Error monad
+// > An error occured!
+
+?>
+```
+
 ## Development
 
 [Markdown API-Doc](docs/md/2. Classes.md)
