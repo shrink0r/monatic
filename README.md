@@ -1,9 +1,9 @@
 # Monatic
 
 [![Build Status](https://secure.travis-ci.org/shrink0r/monatic.png)](http://travis-ci.org/shrink0r/monatic)
+[![Coverage Status](https://coveralls.io/repos/shrink0r/monatic/badge.svg?branch=master)](https://coveralls.io/r/shrink0r/monatic?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/shrink0r/monatic/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/shrink0r/monatic/?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d)
-[![Coverage Status](https://coveralls.io/repos/shrink0r/monatic/badge.svg?branch=master)](https://coveralls.io/r/shrink0r/monatic?branch=master)
 
 Playing around with monads and php.
 
