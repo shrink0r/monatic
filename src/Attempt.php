@@ -90,7 +90,6 @@ class Attempt implements MonadInterface
     {
         try {
             $result = call_user_func($this->codeBlock, $prevResult);
-
             return ($result instanceof MonadInterface) ? $result : Success::unit($result);
         } catch (Exception $error) {
             return Error::unit($error);

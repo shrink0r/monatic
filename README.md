@@ -110,36 +110,6 @@ echo implode(', ', array_unique($titleWords->get()));
 ?>
 ```
 
-### Eventually
-
-Chained execution of dependent method invocations that might execute asynchronously:
-
-```php
-<?php
-
-use Shrink0r\Monatic\Eventually;
-
-$loadInitialData = function () {
-    return Eventually::unit(function ($success) {
-        $success([ 'php', 'python' ]);
-    });
-};
-
-$loadMoreData = function ($initialData) {
-    return Eventually::unit(function ($success) use ($initialData) {
-        // this is where you would call your async code and pass it along the $success callback
-        $success(array_merge($initialData, [ 'ruby', 'rust', 'erlang' ]));
-    });
-};
-
-$eventually = $loadInitialData()->bind($loadMoreData)->get(function ($finalData) {
-    echo implode(", ", $finalData);
-});
-// > php, python, ruby, rust, erlang
-
-?>
-```
-
 ### Attempt
 
 Chained execution of dependent method invocations that might throw an exception.
@@ -174,6 +144,36 @@ $loadMoreData = function (Success $result) {
 $result = Attempt::unit($loadInitialData)->bind($loadMoreData)->get();
 echo $result->get()->getMessage(); // $result is an Error monad
 // > An error occured!
+
+?>
+```
+
+### Eventually
+
+Chained execution of dependent method invocations that might execute asynchronously:
+
+```php
+<?php
+
+use Shrink0r\Monatic\Eventually;
+
+$loadInitialData = function () {
+    return Eventually::unit(function ($success) {
+        $success([ 'php', 'python' ]);
+    });
+};
+
+$loadMoreData = function ($initialData) {
+    return Eventually::unit(function ($success) use ($initialData) {
+        // this is where you would call your async code and pass it along the $success callback
+        $success(array_merge($initialData, [ 'ruby', 'rust', 'erlang' ]));
+    });
+};
+
+$eventually = $loadInitialData()->bind($loadMoreData)->get(function ($finalData) {
+    echo implode(", ", $finalData);
+});
+// > php, python, ruby, rust, erlang
 
 ?>
 ```
