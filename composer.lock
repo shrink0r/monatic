@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6413f2a99537168610d36c02e59d9e1d",
+    "hash": "5084a835b4eb1b0a318422d7f7caf15f",
     "packages": [
         {
             "name": "symfony/property-access",
