@@ -16,6 +16,7 @@
         "psr-4": { "Shrink0r\\Monatic\\Tests\\": "tests/unit/" }
     },
     "require": {
+        "php": ">=5.6.0",
         "symfony/property-access": "~2.7"
     },
     "require-dev": {
