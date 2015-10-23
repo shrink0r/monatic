@@ -2,7 +2,7 @@
 
 namespace Shrink0r\Monatic;
 
-class Success extends Maybe
+class Success extends Result
 {
     public function __construct($value = null)
     {

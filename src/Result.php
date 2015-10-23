@@ -2,7 +2,7 @@
 
 namespace Shrink0r\Monatic;
 
-class Error extends Result
+class Result extends Maybe
 {
-
 }
+
