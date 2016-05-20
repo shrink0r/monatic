@@ -36,6 +36,10 @@ class None extends Maybe
      */
     public function get(callable $codeBlock = null)
     {
+        if (is_callable($codeBlock)) {
+            return $codeBlock(null);
+        }
+
         return null;
     }
 }
