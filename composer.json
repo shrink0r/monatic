@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "symfony/property-access": "~2.7"
+        "symfony/property-access": "~3.1"
     },
     "require-dev": {
         "sami/sami": "^3.3.0",
