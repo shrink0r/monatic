@@ -8,8 +8,9 @@
 [![Code Climate](https://codeclimate.com/github/shrink0r/monatic/badges/gpa.svg)](https://codeclimate.com/github/shrink0r/monatic)
 [![Dependency Status](https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d/badge.svg?style=flat-square)][4]
 [![Stories in Ready](https://badge.waffle.io/shrink0r/monatic.png?label=ready&title=Ready)][9]
-[![Total Composer Downloads](https://poser.pugx.org/shrink0r/monatic/d/total.png)][1]
-Please have a look at the [available releases](releases).
+[![Total Composer Downloads](https://poser.pugx.org/shrink0r/monatic/d/total.png)][1] 
+
+Please have a look at the [available releases](https://github.com/shrink0r/monatic/releases).
 
 ## Purpose
 
