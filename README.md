@@ -38,8 +38,8 @@ Alternatively, you can download a release archive from the [github releases](rel
 
 ## Documentation
 
-[Usage](docs/usage.md)
-[Markdown API-Doc](docs/md/2. Classes.md)
+* [Usage](docs/usage.md)
+* [Markdown API-Doc](docs/md/2. Classes.md)
 
 ## Community
 
