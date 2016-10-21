@@ -60,7 +60,7 @@ This project is MIT licensed. See the [linked license](LICENSE.md) for details.
 [1]: https://packagist.org/packages/shrink0r/monatic "shrink0r/monatic on packagist"
 [2]: http://travis-ci.org/shrink0r/monatic "shrink0r/monatic on travis-ci"
 [3]: https://coveralls.io/r/shrink0r/monatic "shrink0r/monatic on coveralls"
-[4]: https://www.versioneye.com/user/projects/YOURIDHERE "shrink0r/monatic on versioneye"
+[4]: https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d "shrink0r/monatic on versioneye"
 [6]: http://www.php-fig.org/psr/psr-4/ "PSR-4 Autoloading Standard"
 [7]: http://www.php-fig.org/psr/psr-1/ "PSR-1 Basic Coding Standard"
 [8]: http://www.php-fig.org/psr/psr-2/ "PSR-2 Coding Style Guide"
