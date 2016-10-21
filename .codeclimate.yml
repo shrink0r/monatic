@@ -1,14 +1,9 @@
 engines:
-  scss-lint:
-    enabled: true
-  csslint:
-    enabled: true
   duplication:
     enabled: true
     config:
       languages:
       - php
-      - javascript
   fixme:
     enabled: true
   phpcodesniffer:
@@ -23,7 +18,6 @@ engines:
 
 ratings:
   paths:
-  - "**.css"
   - "**.php"
 
 exclude_paths:

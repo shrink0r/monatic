@@ -3,12 +3,6 @@
     "license": "MIT",
     "description": "Fiddling with the monad concept in php",
     "keywords": [ "monad" ],
-    "authors": [
-        {
-            "name": "Thorsten Schmitt-Rink",
-            "email": "schmittrink@gmail.com"
-        }
-    ],
     "require": {
         "php": ">=5.6.0",
         "symfony/property-access": "~3.1"
@@ -40,9 +34,6 @@
             "/build",
             "/vendor"
         ]
-    },
-    "suggest": {
-        "ext-fileinfo": "to handle mimetype guessing locally"
     },
     "scripts": {
         "test": [

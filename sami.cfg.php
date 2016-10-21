@@ -12,7 +12,7 @@ $iterator = Finder::create()
 //$versions = GitVersionCollection::create(__DIR__)->add('master', 'master branch')->addFromTags('*');
 
 return new Sami($iterator, [
-    'title'                => 'YOURNAMESPACE API',
+    'title'                => 'monatic - api doc',
     'default_opened_level' => 2,
     'build_dir'            => __DIR__ . '/build/docs/sami/api/%version%',
     'cache_dir'            => __DIR__ . '/build/cache/sami/%version%',
