@@ -10,8 +10,6 @@
 [![Stories in Ready](https://badge.waffle.io/shrink0r/monatic.png?label=ready&title=Ready)][9]
 [![Total Composer Downloads](https://poser.pugx.org/shrink0r/monatic/d/total.png)][1] 
 
-Please have a look at the [available releases](https://github.com/shrink0r/monatic/releases).
-
 ## Purpose
 
 Fiddling with the monad concept in php.
@@ -34,7 +32,7 @@ Adding it manually as a vendor library requirement to the `composer.json` file o
 }
 ```
 
-Alternatively, you can download a release archive from the [github releases](releases).
+Alternatively, you can download a release archive from the [available releases](https://github.com/shrink0r/monatic/releases) page.
 
 ## Documentation
 
