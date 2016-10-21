@@ -1,190 +1,70 @@
-# Monatic
+# monatic
 
-[![Build Status](https://secure.travis-ci.org/shrink0r/monatic.png)](http://travis-ci.org/shrink0r/monatic)
-[![Coverage Status](https://coveralls.io/repos/shrink0r/monatic/badge.svg?branch=master)](https://coveralls.io/r/shrink0r/monatic?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/shrink0r/monatic/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/shrink0r/monatic/?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/550b51f2a80b5fc12d00017d)
+[![Latest-Stable-Version](https://poser.pugx.org/shrink0r/monatic/v/stable.svg)][1]
+[![License](https://poser.pugx.org/shrink0r/monatic/license.svg)][10]
+[![Latest Unstable Version](https://poser.pugx.org/shrink0r/monatic/v/unstable.svg)][1]
+[![Build Status](https://secure.travis-ci.org/shrink0r/monatic.png)][2]
+[![Coverage Status](https://coveralls.io/repos/shrink0r/monatic/badge.png)][3]
+[![Dependency Status](https://www.versioneye.com/user/projects/YOURIDHERE/badge.svg)][4]
+[![Stories in Ready](https://badge.waffle.io/shrink0r/monatic.png?label=ready&title=Ready)][9]
+[![Total Composer Downloads](https://poser.pugx.org/shrink0r/monatic/d/total.png)][1]
 
-Playing around with monads and php.
+Please have a look at the [available releases](releases).
 
-## Brief examples
+## Purpose
 
-### Maybe
+Fiddling with the monad concept in php.
 
-Chained access to nested array/object values:
+## Requirements and installation
 
-```php
-<?php
+- PHP v5.6+
 
-use Shrink0r\Monatic\Maybe;
+Install the library via [Composer](http://getcomposer.org/):
 
-$data = [ "foo" => [ "bar" => "hello world!"] ];
+```./composer.phar require shrink0r/monatic [optional version]```
 
-echo Maybe::unit($data)->foo->bar->get();
-// > hello world!
+Adding it manually as a vendor library requirement to the `composer.json` file of your project works as well:
 
-echo Maybe::unit($data)->foo->snafu->get();
-// > (null)
-
-echo get_class(Maybe::unit($data)->foo->snafu);
-// > Shrink0r\Monatic\None
-
-?>
+```json
+{
+    "require": {
+        "shrink0r/monatic": "^0.2"
+    }
+}
 ```
 
-### Many
+Alternatively, you can download a release archive from the [github releases](releases).
 
-Chained access across recursive collections:
+## Documentation
 
-```php
-<?php
-
-use Shrink0r\Monatic\Many;
-
-$data = [
-    [
-        "categories" => [
-            [
-                "name" => "category-one",
-                "articles" => [
-                    [ "title" => "foo one text" ]
-                ]
-            ],
-            [
-                "name" => "category-two",
-                "articles" => [
-                    [ "title" => "foo two text" ]
-                ]
-            ]
-        ]
-    ],
-    [
-        "categories" => [
-            [
-                "name" => "category-three",
-                "articles" => [
-                    [ "title" => "foo three text" ]
-                ]
-            ],
-            [
-                "name" => "category-four",
-                "articles" => [
-                    [ "title" => "foo four text" ]
-                ]
-            ]
-        ]
-    ]
-];
-
-echo implode(', ', Many::unit($data)->categories->articles->title->get());
-// > foo one text, foo two text, foo three text, foo four text
-
-echo implode(', ', Many::unit($data)->snafu->articles->title->get());
-// > (empty string)
-
-?>
-```
-
-### ManyMaybe
-
-Similar to ```Many```. The difference is, that the ```$value```, that is passed to ```bind```'s callback is guaranteed to be a ```Maybe``` monad:
-
-```php
-<?php
-
-use Shrink0r\Monatic\ManyMaybe;
-use Shrink0r\Monatic\Maybe;
-
-$data = [
-    // ... same definition as in the Many example
-];
-
-$titleWords = ManyMaybe::unit($data)->categories->articles->bind(function (Maybe $article) {
-    // instead of relying on $article['title'] we can now use $article->title
-    return ManyMaybe::unit(explode(' ', $article->title->get()));
-});
-
-echo implode(', ', array_unique($titleWords->get()));
-// > foo, one, text, two, three, four
-
-?>
-```
-
-### Attempt
-
-Chained execution of dependent method invocations that might throw an exception.
-In case an exception is raised along the way, then an Error is returned in the end.
-
-```php
-<?php
-
-use Shrink0r\Monatic\Attempt;
-
-// Success case example:
-$loadInitialData = function (Success $result) {
-    return [ 'php', 'python' ];
-};
-$loadMoreData = function (Success $result) {
-    return array_merge($result->get(), [ 'ruby', 'rust', 'erlang' ]);
-};
-
-$result = Attempt::unit($loadInitialData)->bind($loadMoreData)->get();
-echo implode(", ", $result->get()); // $result is a Success monad
-// > php, python, ruby, rust, erlang
-
-
-// Error case example:
-$loadInitialData = function (Success $result) {
-    throw new Exception("An error occured!");
-};
-$loadMoreData = function (Success $result) {
-    return array_merge($result->get(), [ 'ruby', 'rust', 'erlang' ]);
-};
-
-$result = Attempt::unit($loadInitialData)->bind($loadMoreData)->get();
-echo $result->get()->getMessage(); // $result is an Error monad
-// > An error occured!
-
-?>
-```
-
-### Eventually
-
-Chained execution of dependent method invocations that might execute asynchronously:
-
-```php
-<?php
-
-use Shrink0r\Monatic\Eventually;
-
-$loadInitialData = function () {
-    return Eventually::unit(function ($success) {
-        $success([ 'php', 'python' ]);
-    });
-};
-
-$loadMoreData = function ($initialData) {
-    return Eventually::unit(function ($success) use ($initialData) {
-        // this is where you would call your async code and pass it along the $success callback
-        $success(array_merge($initialData, [ 'ruby', 'rust', 'erlang' ]));
-    });
-};
-
-$eventually = $loadInitialData()->bind($loadMoreData)->get(function ($finalData) {
-    echo implode(", ", $finalData);
-});
-// > php, python, ruby, rust, erlang
-
-?>
-```
-
-## Development
-
+[Usage](docs/usage.md)
 [Markdown API-Doc](docs/md/2. Classes.md)
 
-Common tasks:
+## Community
 
-* Run tests: ```./vendor/bin/phpunit```
-* Generate html docs: ```DOC_TYPE=html ./vendor/bin/sami.php update .sami.php```
-* Generate markdown docs: ```./vendor/bin/sami.php update .sami.php```
-* Run code-sniffer: ```./vendor/bin/phpcs --standard=PSR2 src/ tests/```
+None, but you may join the freenode IRC [`#honeybee`](irc://irc.freenode.org/honeybee) channel anytime. :-)
+
+## Contributors
+
+Please contribute by [forking](http://help.github.com/forking/) and sending a [pull request](http://help.github.com/pull-requests/). More information can be found in the [`CONTRIBUTING.md`](CONTRIBUTING.md) file. The authors and contributors are mentioned in the [github contributors graph](https://github.com/shrink0r/monatic/graphs/contributors) of this repository.
+
+The code tries to adhere to the following PHP-FIG standards: [PSR-4][6], [PSR-1][7] and [PSR-2][8].
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md) for more information about changes.
+
+## License
+
+This project is MIT licensed. See the [linked license](LICENSE.md) for details.
+
+[1]: https://packagist.org/packages/shrink0r/monatic "shrink0r/monatic on packagist"
+[2]: http://travis-ci.org/shrink0r/monatic "shrink0r/monatic on travis-ci"
+[3]: https://coveralls.io/r/shrink0r/monatic "shrink0r/monatic on coveralls"
+[4]: https://www.versioneye.com/user/projects/YOURIDHERE "shrink0r/monatic on versioneye"
+[6]: http://www.php-fig.org/psr/psr-4/ "PSR-4 Autoloading Standard"
+[7]: http://www.php-fig.org/psr/psr-1/ "PSR-1 Basic Coding Standard"
+[8]: http://www.php-fig.org/psr/psr-2/ "PSR-2 Coding Style Guide"
+[9]: https://waffle.io/shrink0r/monatic "shrink0r/monatic on waffle"
+[10]: LICENSE.md "license file with full text of the license"
+

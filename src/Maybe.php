@@ -28,7 +28,7 @@ class Maybe implements MonadInterface
      */
     public static function unit($value)
     {
-        return ($value === null) ? new None : new static($value);
+        return new static($value);
     }
 
     /**
