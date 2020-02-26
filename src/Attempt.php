@@ -61,9 +61,8 @@ class Attempt implements MonadInterface
             $result = $this->run($result);
             if ($result instanceof Success) {
                 return $codeBlock($result);
-            } else {
-                return $result;
             }
+            return $result;
         });
     }
 
@@ -82,11 +81,10 @@ class Attempt implements MonadInterface
      * Runs the monad's code-block.
      *
      * @param MonadInterface $prevResult
-     * @param callable $next
      *
      * @return MonadInterface Either Success or Error in case an exception occured.
      */
-    protected function run(MonadInterface $prevResult, callable $next = null)
+    protected function run(MonadInterface $prevResult)
     {
         try {
             $result = call_user_func($this->codeBlock, $prevResult);

@@ -2,12 +2,9 @@
 
 namespace Shrink0r\Monatic\Tests;
 
-use Shrink0r\Monatic\Many;
-use Shrink0r\Monatic\Maybe;
 use Shrink0r\Monatic\ManyMaybe;
-use PHPUnit_Framework_TestCase;
 
-class ManyMaybeTest extends PHPUnit_Framework_TestCase
+class ManyMaybeTest extends TestCase
 {
     public function testAndThenValid()
     {

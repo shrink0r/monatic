@@ -42,9 +42,8 @@ class Maybe implements MonadInterface
     {
         if (is_callable($codeBlock)) {
             return call_user_func($codeBlock, $this->value);
-        } else {
-            return $this->value;
         }
+        return $this->value;
     }
 
     /**
@@ -58,9 +57,8 @@ class Maybe implements MonadInterface
     {
         if ($this->value === null) {
             return new None;
-        } else {
-            return static::unit(call_user_func($codeBlock, $this->value));
         }
+        return static::unit(call_user_func($codeBlock, $this->value));
     }
 
     /**
@@ -93,10 +91,9 @@ class Maybe implements MonadInterface
         return $this->bind(function ($value) use ($methodName, $arguments) {
             $callable = [ $value, $methodName ];
 
+            $result = null;
             if (is_callable($callable)) {
                 $result = call_user_func_array([$value, $methodName], $arguments);
-            } else {
-                $result = null;
             }
 
             return static::unit($result);
@@ -127,10 +124,10 @@ class Maybe implements MonadInterface
     {
         if (is_array($context)) {
             return $this->accessor->getValue($context, "[{$key}]");
-        } elseif (is_object($context)) {
-            return $this->accessor->getValue($context, $key);
-        } else {
-            return $context;
         }
+        if (is_object($context)) {
+            return $this->accessor->getValue($context, $key);
+        }
+        return $context;
     }
 }
