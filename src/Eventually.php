@@ -52,12 +52,12 @@ class Eventually implements MonadInterface
             });
 
             return $this;
-        } else {
-            if (is_callable($codeBlock)) {
-                $codeBlock($this->result);
-            }
-            return $this->result;
         }
+
+        if (is_callable($codeBlock)) {
+            $codeBlock($this->result);
+        }
+        return $this->result;
     }
 
     /**

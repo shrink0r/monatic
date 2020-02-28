@@ -42,9 +42,8 @@ class Many implements MonadInterface
     {
         if (is_callable($codeBlock)) {
             return array_map($codeBlock, $this->values);
-        } else {
-            return $this->values;
         }
+        return $this->values;
     }
 
     /**
@@ -121,13 +120,14 @@ class Many implements MonadInterface
     {
         if ($context instanceof Maybe) {
             return $context->$key->get();
-        } elseif (is_array($context)) {
-            return $this->accessor->getValue($context, "[{$key}]");
-        } elseif (is_object($context)) {
-            return $this->accessor->getValue($context, $key);
-        } else {
-            return $context;
         }
+        if (is_array($context)) {
+            return $this->accessor->getValue($context, "[{$key}]");
+        }
+        if (is_object($context)) {
+            return $this->accessor->getValue($context, $key);
+        }
+        return $context;
     }
 
     /**

@@ -6,9 +6,8 @@ use Shrink0r\Monatic\Attempt;
 use Shrink0r\Monatic\Success;
 use Shrink0r\Monatic\Error;
 use Exception;
-use PHPUnit_Framework_TestCase;
 
-class AttemptTest extends PHPUnit_Framework_TestCase
+class AttemptTest extends TestCase
 {
     public function testSuccessResult()
     {

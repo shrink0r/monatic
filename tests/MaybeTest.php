@@ -6,9 +6,8 @@ use Shrink0r\Monatic\Tests\Fixtures\Article;
 use Shrink0r\Monatic\Tests\Fixtures\Category;
 use Shrink0r\Monatic\Maybe;
 use Shrink0r\Monatic\None;
-use PHPUnit_Framework_TestCase;
 
-class MaybeTest extends PHPUnit_Framework_TestCase
+class MaybeTest extends TestCase
 {
     public function testAndThenValid()
     {
